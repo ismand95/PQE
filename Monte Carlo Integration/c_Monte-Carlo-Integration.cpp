@@ -22,11 +22,12 @@ double MonteCarloIntegration(Function func, double n, double a, double b)
 {
     // initialize variables
     double I;
+    double FunctionMean;
 
     // draw from uniform distribution (from R)
     NumericVector U = runif(n, a, b);
 
-    double FunctionMean = ArithmeticMean(func(U));
+    FunctionMean = ArithmeticMean(func(U));
     I = (b - a) * FunctionMean;
 
     return I;
