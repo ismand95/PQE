@@ -8,3 +8,7 @@ objective <- function(x, m = 15, l = 0.1) {
 sourceCpp("c_bisection.cpp")
 
 BiSection(func = objective, x_l = -10, x_r = 10, tol = 1e-5)
+
+
+# verify solution
+uniroot(objective, interval = c(-100, 100))
