@@ -12,7 +12,7 @@ double CallR(Function func, double x)
 }
 
 // [[Rcpp::export]]
-List Secant(Function func, double x_0, double x_1, double tol, double maxiter)
+List Secant(Function func, double x_0, double x_1, double tol, int maxiter)
 {
     // initialize variables
     double x_2;
