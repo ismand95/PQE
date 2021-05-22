@@ -11,12 +11,6 @@ double CallR(Function func, double x)
     return *REAL(func_val);
 }
 
-double Abs(double x)
-{
-    // dummy to return absolute value
-    return pow(pow(x, 2.0), 0.5);
-}
-
 // [[Rcpp::export]]
 List Secant(Function func, double x_0, double x_1, double tol, double maxiter)
 {
@@ -28,7 +22,7 @@ List Secant(Function func, double x_0, double x_1, double tol, double maxiter)
     {
         x_2 = x_1 - CallR(func, x_1) * ((x_0 - x_1) / (CallR(func, x_0) - CallR(func, x_1)));
 
-        if (Abs(CallR(func, x_2)) < tol)
+        if (abs(CallR(func, x_2)) < tol)
         {
             secant["root"] = x_2;
             secant["iterations"] = i;
