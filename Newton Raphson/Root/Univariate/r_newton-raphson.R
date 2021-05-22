@@ -44,3 +44,6 @@ newton_raphson <- function(func,
 }
 
 newton_raphson(objective, objective_prime, x_0 = 1)
+
+# verify solution
+uniroot(objective, interval = c(-100, 100))
