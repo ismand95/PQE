@@ -20,4 +20,5 @@ NewtonRaphson(
     maxiter = 10000
 )
 
+# verify solution
 uniroot(objective, interval = c(-100, 100))

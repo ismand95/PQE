@@ -18,7 +18,7 @@ List BiSection(Function func, double x_l, double x_r, double tol)
     List bisection;
     double x_m; // placeholder mid-value
     double f_m; // placeholder mid-value eval
-    int i = 0; // iteration variable
+    int i = 0;  // iteration variable
 
     // validating inputs
     if (x_l >= x_r)
@@ -37,18 +37,32 @@ List BiSection(Function func, double x_l, double x_r, double tol)
 
         if (f_m == 0)
         {
-            bisection["iterations"] = i;
-            bisection["root"] = x_m;
-        } else if ((CallR(func, x_l) * CallR(func, x_m)) < 0)
+            break;
+        }
+        else if ((CallR(func, x_l) * CallR(func, x_m)) < 0)
         {
             x_r = x_m;
-        } else{
+        }
+        else
+        {
             x_l = x_m;
         }
-        i += 1;  
+        i += 1;
     }
+
+    if (f_m == 0)
+    {
+        bisection["root"] = x_m;
+        bisection["value at root"] = CallR(func, x_m);
+    }
+    else
+    {
+        bisection["root"] = (x_r + x_l) / 2;
+        bisection["value at root"] = CallR(func, (x_r + x_l) / 2);
+    }
+
     bisection["iterations"] = i;
-    bisection["root"] = (x_r + x_l) / 2;
-        
+    bisection["convergence"] = "Achieved";
+
     return bisection;
 }
