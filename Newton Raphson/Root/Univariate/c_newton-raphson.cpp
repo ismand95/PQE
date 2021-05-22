@@ -12,12 +12,13 @@ double CallR(Function func, double x)
 }
 
 // [[Rcpp::export]]
-List NewtonRaphson(Function func, Function func_prime, double x_0, double tol, int maxiter) {
+List NewtonRaphson(Function func, Function func_prime, double x_0, double tol, int maxiter)
+{
     // initialize variables
     List newtonraphson;
     int i = 0;
 
-    while ((i < maxiter) && (abs(CallR(func, x_0)) > tol))
+    while ((abs(CallR(func, x_0)) > tol) && (i < maxiter))
     {
         x_0 = x_0 - (CallR(func, x_0) / CallR(func_prime, x_0));
         i += 1;
@@ -25,7 +26,7 @@ List NewtonRaphson(Function func, Function func_prime, double x_0, double tol, i
         // comment out to not print
         Rcout << i << ": " << x_0 << "\n";
     }
-    
+
     if (abs(CallR(func, x_0)) < tol)
     {
         newtonraphson["root"] = x_0;
@@ -34,7 +35,8 @@ List NewtonRaphson(Function func, Function func_prime, double x_0, double tol, i
         newtonraphson["convergence"] = "Achieved";
 
         return newtonraphson;
-    } else
+    }
+    else
     {
         newtonraphson["root"] = NA_REAL;
         newtonraphson["iterations"] = i;

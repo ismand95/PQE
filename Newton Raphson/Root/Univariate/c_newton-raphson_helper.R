@@ -17,5 +17,7 @@ NewtonRaphson(
     func_prime = objective_prime,
     x_0 = 1,
     tol = 1e-10,
-    maxiter = 1e10
+    maxiter = 10000
 )
+
+uniroot(objective, interval = c(-100, 100))
