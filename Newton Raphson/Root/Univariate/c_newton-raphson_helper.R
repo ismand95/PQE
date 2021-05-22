@@ -12,4 +12,10 @@ objective_prime <- function(x) {
     return(-sin(x) - 1)
 }
 
-NewtonRaphson(objective, objective_prime, x_0 = 1, tol = 1e-10, maxiter = 10000)
+NewtonRaphson(
+    func = objective,
+    func_prime = objective_prime,
+    x_0 = 1,
+    tol = 1e-10,
+    maxiter = 1e10
+)
