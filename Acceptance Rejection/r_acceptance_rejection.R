@@ -1,13 +1,16 @@
 ### Auxiliary functions ###
 
+# Setting up the probability distribution for the Gamma distribution
 gamma.pdf <- function(x, k, theta) {
     return(theta^k * x^(k - 1) * exp(-theta * x))
 }
 
+# Setting up the probability distributino for the Exponential function
 exponential.pdf <- function(x, lambda) {
     return(lambda * exp(-lambda * x))
 }
 
+# The following function simulates by the Inversion Method the exponential distribution. 
 Exponential.Simulate <- function(lambda, size = 1) {
     V <- runif(size)
     return(-1 / lambda * log(V))
@@ -21,10 +24,6 @@ Exponential.Simulate <- function(lambda, size = 1) {
 # at a time
 #
 ###
-
-# Note: Man skal sætte værdier for theta og k, hvilket jeg selv gør for nedenstående, hvis man skal gøre linjerne enkeltvis inde i funktionen.
-# theta <- 0.1
-# k <- 1.1
 
 
 Gamma.Simulate <- function(k, theta, size = 1) {
