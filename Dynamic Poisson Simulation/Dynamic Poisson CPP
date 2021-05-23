@@ -1,0 +1,50 @@
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+NumericVector poisson_CPP(int iT, double dPhi, double dAlpha) {
+  
+  NumericVector vY(iT); //vector of observations
+  double dL;
+  double dY;  
+
+  //initialize at the unconditional value
+  dL = dPhi / (1 - dAlpha);
+  
+  //sample the first observations
+  vY[0] = Rf_rpois(dL);
+  
+  for (int i = 1; i < iT; i++) {
+        dL = dPhi + dAlpha * vY[i-1];
+        dY = Rf_rpois(dL);
+        vY[i] = dY;
+  }
+  
+  return vY;
+}
+
+
+// [[Rcpp::export]]
+double dAvgNegLogLike(NumericVector vY, double dPhi, double dAlpha) {
+
+    int iT = vY.size();
+    NumericVector vLambda(iT);
+
+    vLambda(0) = dPhi / (1 - dAlpha);
+
+    double dAvgLogLike = Rf_dpois(vY(0), vLambda(0), 1);
+
+    for (int t = 1; t < iT; t++)
+    {
+      vLambda(t) = dPhi + dAlpha * vY[t-1];
+      dAvgLogLike = dAvgLogLike + Rf_dpois(vY(t), vLambda(t), 1);
+    }
+  
+  double mean = dAvgLogLike / (iT * 1.0);
+  return -mean; 
+
+}
+
+
+
+
