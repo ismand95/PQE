@@ -14,6 +14,11 @@ double CallR(Function func, double x)
 // [[Rcpp::export]]
 List BiSection(Function func, double x_l, double x_r, double tol)
 {
+    /*
+        The bisection takes the interval [x_l; x_r] in which a root lies,
+        therefore this algorithm will not fail if no root is found.
+    */
+
     // initialize variables
     List bisection;
     double x_m; // placeholder mid-value
