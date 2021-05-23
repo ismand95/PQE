@@ -6,6 +6,7 @@ gumbel.simulate <- function(n, beta = 2, mu = 0.5) {
     return(mu - beta * log(-log(data_sample)))
 }
 
+# Theoretical PDF: 
 gumbel.density <- function(x, beta = 2, mu = 0.5) {
     return(
         (1 / beta) * exp(-((x - mu) / beta + exp(-(x - mu) / beta)))
