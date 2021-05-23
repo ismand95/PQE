@@ -1,12 +1,13 @@
 set.seed(1337)
 
+# Inversion method with Gumbel distribution 
 gumbel.simulate <- function(n, beta = 2, mu = 0.5) {
     data_sample <- runif(n, min = 0, max = 1)
 
     return(mu - beta * log(-log(data_sample)))
 }
 
-# Theoretical PDF: 
+# Theoretical PDF
 gumbel.density <- function(x, beta = 2, mu = 0.5) {
     return(
         (1 / beta) * exp(-((x - mu) / beta + exp(-(x - mu) / beta)))
