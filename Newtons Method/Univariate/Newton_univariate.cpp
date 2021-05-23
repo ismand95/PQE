@@ -5,36 +5,60 @@ using namespace Rcpp;
 
 double CallR(Function func, double x)
 {
-    // allows passing R function to cpp double
-    SEXP func_val = func(x);
-    return *REAL(func_val);
+  // allows passing R function to cpp double
+  SEXP func_val = func(x);
+  return *REAL(func_val);
 }
-///////////// Newton's method //////////////
 
 //[[Rcpp::export]]
-List NR_optim_CPP(Function f, Function f_p, Function f_pp, double dX0, double dTol = 1e-5, double maxiter = 2000) {
-  
+List Newton(
+    Function f,
+    Function f_p,
+    Function f_pp,
+    double dX0,
+    double dTol = 1e-9,
+    double maxiter = 2000)
+{
+  // initialize variables
   double dX = dX0;
-  int iter = 0;
-  
-  while((abs(CallR(f, dX))) > dTol && (iter < maxiter)) {
+  int i = 0;
+  List lOut;
+
+  while ((abs(CallR(f_p, dX)) > dTol) && (i < maxiter))
+  {
     dX = dX - CallR(f_p, dX) / CallR(f_pp, dX);
-    iter = iter + 1;
+    i += 1;
   }
-  
-  if (abs(CallR(f_p, dX)) > dTol) {
-    List lOut;
-    lOut["X value"] = NA_REAL;
-    lOut["Function value"] = NA_REAL;
-    lOut["Iterations"] = "max";
-    lOut["Convergence"] = "Algorithm failed to converge"; 
+
+  if (abs(CallR(f_p, dX)) > dTol)
+  {
+    lOut["optimum"] = NA_REAL;
+    lOut["iterations"] = maxiter;
+    lOut["f.optimum"] = NA_REAL;
+    lOut["f_prime.optimum"] = NA_REAL;
+    lOut["f_sec.optimum"] = NA_REAL;
+    lOut["type"] = NULL;
+    lOut["convergence"] = "Not achieved";
     return lOut;
-  } else {
-    List lOut;
-    lOut["X value"] = dX;
-    lOut["Function value"] = CallR(f, dX);
-    lOut["Iterations"] = iter;
-    lOut["Convergence"] = "Algorithm converged"; 
+  }
+  else
+  {
+    lOut["optimum"] = dX;
+    lOut["iterations"] = i;
+    lOut["f.optimum"] = CallR(f, dX);
+    lOut["f_prime.optimum"] = CallR(f_p, dX);
+    lOut["f_sec.optimum"] = CallR(f_pp, dX);
+    lOut["convergence"] = "Achieved";
+
+    if (CallR(f_pp, dX) < 0.0)
+    {
+      lOut["type"] = "Local maximum";
+    }
+    else
+    {
+      lOut["type"] = "Local minimum";
+    }
+
     return lOut;
   }
 }

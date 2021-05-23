@@ -1,26 +1,48 @@
 # R helper Newton_univariate
-
 library(Rcpp)
+library(RcppArmadillo)
+
 sourceCpp("Newton_univariate.cpp")
 
 # function for testing
-test_fn <- function(dX) {
-   dOut <- cos(dX) - dX
-   return(dOut)
+objective <- function(x) {
+   return(
+      x^3 + (6 - x)^2
+   )
 }
 
-test_fn_p <- function(dX) {
-   dOut <- -sin(dX) - 1
-   return(dOut)
+objective_prime <- function(x) {
+   return(
+      3 * x^2 + 2 * x - 12
+   )
 }
 
-test_fn_pp <- function(dX) {
-   dOut <- -cos(dX)
-   return(dOut)
+objective_sec <- function(x) {
+   return(
+      6 * x + 2
+   )
 }
 
-plot(seq(-5, 7, 0.001), test_fn(seq(-5, 7, 0.001)))
+# plot function
+plot(seq(-5, 5, 1e-3), objective(seq(-5, 5, 1e-3)), type = "l")
 
 
 # Testing function
-NR_optim_CPP(test_fn, test_fn_p, test_fn_pp, 1, 1e-5, 2000)
+Newton(
+   f = objective,
+   f_p = objective_prime,
+   f_pp = objective_sec,
+   dX0 = -1
+)
+
+Newton(
+    objective,
+    objective_prime,
+    objective_sec,
+    dX0 = 4
+)
+
+
+# verify solution
+optimize(objective, lower = -5, upper = 5, maximum = TRUE) # maximum
+optimize(objective, lower = -5, upper = 5) # minimum

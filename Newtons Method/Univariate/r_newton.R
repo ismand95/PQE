@@ -19,11 +19,11 @@ newton <- function(
             list(
                 optimum = NULL,
                 iterations = i,
-                f.optimum = func(),
-                f_prime.optimum = func_prime(),
+                f.optimum = NULL,
+                f_prime.optimum = NULL,
                 f_sec.optimum = NULL,
                 type = NULL,
-                convergence = "Not Achieved"
+                convergence = "Not achieved"
             )
         )
     } else {
