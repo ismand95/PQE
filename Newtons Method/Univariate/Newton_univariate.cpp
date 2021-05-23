@@ -24,6 +24,9 @@ List NR_optim_CPP(Function f, Function f_p, Function f_pp, double dX0, double dT
   
   if (abs(CallR(f_p, dX)) > dTol) {
     List lOut;
+    lOut["X value"] = NA_REAL;
+    lOut["Function value"] = NA_REAL;
+    lOut["Iterations"] = "max";
     lOut["Convergence"] = "Algorithm failed to converge"; 
     return lOut;
   } else {
