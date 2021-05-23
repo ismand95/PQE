@@ -39,7 +39,10 @@ lSim <- PoisSimulate_R(iT, dPhi, dAlpha)
 
 # Simulation in C++ and comparison of computational time
 sourceCpp("PoisSimulateC.cpp")
-microbenchmark(PoisSimulate_R(iT, dPhi, dAlpha), PoisSimulate_cpp(iT, dPhi, dAlpha))
+microbenchmark(
+  PoisSimulate_R(iT, dPhi, dAlpha),
+  PoisSimulate_cpp(iT, dPhi, dAlpha)
+)
 lSim2 <- PoisSimulate_cpp(iT, dAlpha, dPhi)
 
 ################## ESTIMATION#################
