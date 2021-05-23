@@ -19,3 +19,7 @@ MonteCarloIntegration(
     a = -1,
     b = 1
 )
+
+
+# verify solution
+integrate(f = objective, lower = -1, upper = 1)
