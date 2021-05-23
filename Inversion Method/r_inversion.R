@@ -19,6 +19,7 @@ xlim <- c(min(gumbel_sim), max(gumbel_sim))
 x_density <- seq(xlim[1], xlim[2], 1e-4)
 gumbel_density <- gumbel.density(x_density)
 
+# Plotting both the simulated and theoretical results to compare 
 hist(
     gumbel_sim,
     breaks = 141,
