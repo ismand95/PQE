@@ -104,3 +104,21 @@ newton(
     func = objective,
     arguments = c(1.6, 1.2)
 )
+
+
+# verify results
+
+# verify by maximizing (fnscale = -1)
+optim(
+    par = c(1, 2),
+    objective,
+    method = "BFGS",
+    control = list(fnscale = -1)
+)
+
+# verify by minimizing - ordinary optim
+optim(
+    par = c(2, 0),
+    objective,
+    method = "BFGS"
+)
