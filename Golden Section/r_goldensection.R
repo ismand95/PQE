@@ -6,7 +6,7 @@ objective <- function(x) {
     }
 }
 
-goldensection <- function(func, x_l, x_m, x_r, tol = 1e-8, ...) {
+goldensection <- function(func, x_l, x_m, x_r, tol = 1e-10, ...) {
     # conditions for algorithm
     if (x_l >= x_m) {
         stop("Initial condition error: x_l >= x_m\n")
@@ -52,8 +52,13 @@ goldensection <- function(func, x_l, x_m, x_r, tol = 1e-8, ...) {
         cat(iter, ":", x_m, "\n")
         iter <- iter + 1
     }
-    return(x_m)
+    return(
+        list(
+            optimum = x_m,
+            f.optimum = func(x_m),
+            iterations = iter
+        )
+    )
 }
-
 
 goldensection(objective, x_l = 0.5, x_m = 4, x_r = 10)
