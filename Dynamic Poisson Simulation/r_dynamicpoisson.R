@@ -1,22 +1,24 @@
-
 # Simulation from dynamic Poisson distribution
-# Function that simulate T observations: 
-set.seed(69)
-poisson <- function(iT, dPhi = 0.5, dAlpha = 0.7) {
-    # Container
-    vY <- rep(0, iT)
-    # Defining first value of lambda
-    lambda_1 = dPhi / (1 - dAlpha)
-    # Setting the first entry
-    vY[1] <- rpois(1, lambda_1)
-    
-    # Setting up the loop 
-    for (i in 2:iT) {
-       vY[i] <- rpois(1, (dPhi + dAlpha * vY[i-1]))
+# Function that simulate T observations
+
+set.seed(90210)
+
+dynamic_poisson <- function(T, phi = 0.5, alpha = 0.7) {
+    poi <- rep(
+        NA,
+        times = T
+    )
+
+    # initials
+    lambda <- phi / (1 - alpha)
+    poi[1] <- rpois(n = 1, lambda = lambda)
+
+    for (t in seq(2, T)) {
+        lambda <- phi + alpha * poi[t - 1]
+        poi[t] <- rpois(n = 1, lambda = lambda)
     }
 
-    return(vY)
+    return(poi)
 }
-# Testing function
-vY <- poisson(100)
 
+dynamic_poisson(500)
