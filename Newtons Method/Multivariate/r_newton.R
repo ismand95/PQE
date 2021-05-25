@@ -92,6 +92,7 @@ objective <- function(arguments) {
 }
 
 
+# Run both numerical and analytical optimizations using the algorithm
 newton(
     conditions = numerical_conditions,
     func = objective,
@@ -102,14 +103,4 @@ newton(
     conditions = analytical_conditions,
     func = objective,
     arguments = c(1.6, 1.2)
-)
-
-
-numerical_conditions(
-    objective,
-    c(1.6, 1.2)
-)
-analytical_conditions(
-    objective,
-    c(1.6, 1.2)
 )
