@@ -1,6 +1,6 @@
 library(numDeriv)
 
-newton <- function(conditions, func, arguments, tol = 1e-8, maxiter = 1000) {
+newton <- function(conditions, func, arguments, tol = 1e-4, maxiter = 1000) {
     # Function to optimize any function `func` of n arguments
     # `conditions` is a list of the function, gradient and Hessian
     # evaulated at a point - fx. (x, y)
@@ -64,20 +64,19 @@ analytical_conditions <- function(func, arguments) {
     y <- arguments[2]
 
     # FOC
-    f_x <- 2 * (1 - x) * (-1) + 200 * (y - x^2) * (-2 * x)
-    f_y <- 200 * (y - x^2)
+    f_x <- cos(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) * x - sin(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * 2
+    f_y <- -cos(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) * y / 2 + sin(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * exp(y)
 
     # SOC
-    f_xx <- 2 - 400 * y + 1200 * x^2
-    f_yy <- 200
-    f_xy <- -400 * x
-    f_yx <- -400 * x
+    f_xx <- -sin(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) * (4 + x^2) + cos(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) - cos(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * 4 * x
+    f_xy_yx <- sin(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) * (x * y / 2 + 2 * exp(y)) + cos(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * (x * exp(y) + y)
+    f_yy <- -sin(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) * (y^2 / 4 + exp(2 * y)) - cos(x^2 / 2 - y^2 / 4) * cos(2 * x - exp(y)) / 2 - cos(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * y * exp(y) + sin(x^2 / 2 - y^2 / 4) * sin(2 * x - exp(y)) * exp(y)
 
     return(
         list(
             func(arguments),
             c(f_x, f_y),
-            matrix(c(f_xx, f_xy, f_yx, f_yy), 2, 2) # always symmetric
+            matrix(c(f_xx, f_xy_yx, f_xy_yx, f_yy), 2, 2) # always symmetric
         )
     )
 }
@@ -99,8 +98,18 @@ newton(
     arguments = c(1.6, 1.2)
 )
 
-# newton(
-#    conditions = analytical_conditions,
-#    func = objective,
-#    arguments = c(-2, 4)
-# )
+newton(
+    conditions = analytical_conditions,
+    func = objective,
+    arguments = c(1.6, 1.2)
+)
+
+
+numerical_conditions(
+    objective,
+    c(1.6, 1.2)
+)
+analytical_conditions(
+    objective,
+    c(1.6, 1.2)
+)
