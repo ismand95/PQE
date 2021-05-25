@@ -12,6 +12,7 @@ Code for exam in Programming in Quantitative Economics
     - Place .R files in ./R folder
 
 __Build Package__
+ 
     - Click build in upper-right panel
         - Click "more"
         - Click "Build Source Package"
