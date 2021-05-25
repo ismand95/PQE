@@ -2,28 +2,22 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-NumericVector poisson_CPP(int iT, double dPhi, double dAlpha) {
-  
-  NumericVector vY(iT); //vector of observations
-  double dL;
-  double dY;  
+NumericVector DynamicPoisson(int T, double phi = 0.5, double alpha = 0.7)
+{
+    // initialize variables
+    NumericVector poi(T);
+    double lambda;
 
-  //initialize at the unconditional value
-  dL = dPhi / (1 - dAlpha);
-  
-  //sample the first observations
-  vY[0] = Rf_rpois(dL);
-  
-  for (int i = 1; i < iT; i++) {
-        dL = dPhi + dAlpha * vY[i-1];
-        dY = Rf_rpois(dL);
-        vY[i] = dY;
-  }
-  
-  return vY;
+    // setting initials
+    lambda = phi / (1 - alpha);
+    poi(0) = Rf_rpois(lambda);
+
+    for (int t = 1; t < T; t++)
+    {
+        lambda = phi + alpha * poi(t - 1);
+        poi(t) = Rf_rpois(lambda);
+    }
+    
+
+    return poi;
 }
-
-
-
-
-
