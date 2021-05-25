@@ -1,13 +1,11 @@
 library(numDeriv)
 
-objective <- function(arguments) {
-    # `arguments` expects an ordered vector of variables
-    return((1 - arguments[1])**2 + 100 * (arguments[2] - arguments[1]**2)**2)
-}
+newton <- function(conditions, func, arguments, tol = 1e-8, maxiter = 1000) {
+    # Function to optimize any function `func` of n arguments
+    # `conditions` is a list of the function, gradient and Hessian
+    # evaulated at a point - fx. (x, y)
 
-
-newton <- function(conditions, func, arguments, tol = 1e-8, maxiter = 10000) {
-    i <- 0
+    i <- 1
     cond_eval <- conditions(func, arguments)
 
     # maximum from absolute value of gradients determines a optimum
@@ -19,13 +17,32 @@ newton <- function(conditions, func, arguments, tol = 1e-8, maxiter = 10000) {
 
         cond_eval <- conditions(func, arguments)
 
-        cat(i, ":", "coordinates of (x, y):", arguments, "\n")
+        cat(i, ":", "coordinates of arguments:", arguments, "\n")
         i <- i + 1
     }
+
     if (i == maxiter) {
-        cat("newton failed to converge\n")
+        return(
+            list(
+                optimum = NULL,
+                iterations = i,
+                f.optimum = NULL,
+                gradient.optimum = NULL,
+                hess.optimum = NULL,
+                type = NULL,
+                convergence = "Not achieved"
+            )
+        )
     } else {
-        return(arguments)
+        list(
+            optimum = arguments,
+            iterations = i,
+            f.optimum = cond_eval[1],
+            gradient.optimum = cond_eval[2],
+            hess.optimum = cond_eval[3],
+            type = "Check hess for max/min/saddle",
+            convergence = "Achieved"
+        )
     }
 }
 
@@ -60,8 +77,18 @@ analytical_conditions <- function(func, arguments) {
         list(
             func(arguments),
             c(f_x, f_y),
-            matrix(c(f_xx, f_xy, f_yx, f_yy), 2, 2)  # always symmetric
+            matrix(c(f_xx, f_xy, f_yx, f_yy), 2, 2) # always symmetric
         )
+    )
+}
+
+
+objective <- function(arguments) {
+    # `arguments` expects an ordered vector of variables
+    # based on slides lecture 8, part 2 - slide 13
+    return(
+        (sin(arguments[1]^2 / 2 - arguments[2]^2 / 4)
+        * cos(2 * arguments[1] - exp(arguments[2])))
     )
 }
 
@@ -69,10 +96,11 @@ analytical_conditions <- function(func, arguments) {
 newton(
     conditions = numerical_conditions,
     func = objective,
-    arguments = c(-2, 4)
+    arguments = c(1.6, 1.2)
 )
-newton(
-    conditions = analytical_conditions,
-    func = objective,
-    arguments = c(-2, 4)
-)
+
+# newton(
+#    conditions = analytical_conditions,
+#    func = objective,
+#    arguments = c(-2, 4)
+# )
