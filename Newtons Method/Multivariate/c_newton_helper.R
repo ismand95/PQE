@@ -2,7 +2,7 @@
 
 library(Rcpp)
 library(RcppArmadillo)
-sourceCpp("NewtonMulti.cpp")
+sourceCpp("c_newton.cpp")
 
 # setting up function for testing the algorithm
 grad <- function(vX) {
