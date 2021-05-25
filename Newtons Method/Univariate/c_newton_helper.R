@@ -2,7 +2,7 @@
 library(Rcpp)
 library(RcppArmadillo)
 
-sourceCpp("Newton_univariate.cpp")
+sourceCpp("c_newton.cpp")
 
 # function for testing
 objective <- function(x) {
