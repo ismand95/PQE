@@ -1,10 +1,13 @@
 # PQE
 Code for exam in Programming in Quantitative Economics
 
+## Problem Sets
+The folder `Problem Sets` contains _my (Anders)_ solutions to the exercies.
+There are likely a lot of errors and anti-patterns, so use at own discression
 
 ## How to make an R package in RStudio
 
-__Create Package__
+### Create Package
 
     - Open RStudio
     - Click project -> new project
@@ -14,14 +17,14 @@ __Create Package__
     - Place .cpp files in ./src folder
     - Place .R files in ./R folder
 
-__Build Package__
- 
+### Build Package
+
     - Click build in upper-right panel
         - Click "more"
         - Click "Build Source Package"
         - If there's no errors, you are good to go! ;)
 
-__Test Package__
+### Test Package
 
     - Click packages in bottom-right panel
     - Click install
